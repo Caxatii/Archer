@@ -36,6 +36,11 @@ namespace Mono.Weapons.Projectile
             _transform.position = other.contacts[0].point;
         }
 
+        public float GetGravityScale()
+        {
+            return _rigidbody.gravityScale;
+        }
+        
         public void Throw(float force)
         {
             _rigidbody.velocity = _transform.right * force;

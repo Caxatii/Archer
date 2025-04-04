@@ -7,12 +7,12 @@ namespace Mono.Weapons.Predicates
     {
         public SimplePredicateBehaviour(List<GameObject> objects) : base(objects) { }
 
-        public override void Predict(Vector2 startPoint, Vector2 direction)
+        public override void Predict(Vector2 startPoint, Vector2 direction, float gravityScale)
         {
             Show();
             
             for (var i = 0; i < Objects.Count; i++) 
-                Objects[i].transform.position = CalculatePhysicDirection(startPoint, direction, i);
+                Objects[i].transform.position = CalculatePhysicDirection(startPoint, direction, i, gravityScale);
         }
     }
 }

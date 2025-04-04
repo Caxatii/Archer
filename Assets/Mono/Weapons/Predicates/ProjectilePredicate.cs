@@ -25,9 +25,9 @@ namespace Mono.Weapons.Predicates
             Hide();
         }
         
-        public void Predict(Vector2 startPoint, Vector2 direction)
+        public void Predict(Vector2 startPoint, Vector2 direction, float gravityScale)
         {
-            _predicate.Predict(startPoint, direction);
+            _predicate.Predict(startPoint, direction, gravityScale);
         }
 
         public void Hide()

@@ -14,16 +14,24 @@ namespace Mono.Weapons.Spawners
 
         private void Awake()
         {
-            _pool = new ObjectPool<Arrow>(Create, OnGet, OnRelease);
+            _pool = new ObjectPool<Arrow>(Create, actionOnRelease: OnRelease);
         }
 
-        public void Throw(float force)
+        public void Throw(Arrow arrow, float force)
+        {
+            arrow.gameObject.SetActive(true);
+            arrow.transform.position = SpawnPoint.position;
+            arrow.transform.rotation = SpawnPoint.rotation;
+            arrow.Throw(force);
+        }
+        
+        public Arrow GetArrow()
         {
             var arrow = _pool.Get();
             arrow.Blasted += OnCollisionHit;
-            arrow.Throw(force);
+            return arrow;
         }
-
+        
         private void OnCollisionHit(Arrow arrow)
         {
             arrow.Blasted -= OnCollisionHit;
@@ -34,13 +42,6 @@ namespace Mono.Weapons.Spawners
         {
             arrow.Reset();
             arrow.gameObject.SetActive(false);
-        }
-
-        private void OnGet(Arrow arrow)
-        {
-            arrow.gameObject.SetActive(true);
-            arrow.transform.position = SpawnPoint.position;
-            arrow.transform.rotation = SpawnPoint.rotation;
         }
 
         private Arrow Create()

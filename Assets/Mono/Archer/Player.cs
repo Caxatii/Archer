@@ -1,5 +1,6 @@
 using Mono.Input;
 using Mono.Weapons.Predicates;
+using Mono.Weapons.Projectile;
 using Mono.Weapons.Spawners;
 using UnityEngine;
 
@@ -17,6 +18,7 @@ namespace Mono.Archer
         
         private Vector2 _startTouchPosition;
         
+        private Arrow _arrow;
         private ArrowSpawner _arrowSpawner;
        
         private void Awake()
@@ -42,20 +44,22 @@ namespace Mono.Archer
         {
             _predicate.Predict(_arrowSpawner.SpawnPoint.position,
                 _arrowSpawner.SpawnPoint.right *
-                CalculateThrowDirection(point)
-                    .magnitude);
+                CalculateThrowDirection(point).magnitude, 
+                _arrow.GetGravityScale());
         }
 
         private void OnExit(Vector2 point)
         {
             _animator.PlayThrow();
-            _arrowSpawner.Throw(CalculateThrowDirection(point).magnitude);
+            _arrowSpawner.Throw(_arrow, CalculateThrowDirection(point).magnitude);
             _predicate.Hide();
         }
 
         private void OnEnter(Vector2 point)
         {
             _startTouchPosition = point;
+            _arrow = _arrowSpawner.GetArrow();
+            // _arrow.gameObject.SetActive(false);
         }
 
         private Vector2 CalculateThrowDirection(Vector2 point)

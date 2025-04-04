@@ -13,7 +13,7 @@ namespace Mono.Weapons.Predicates
             Objects = objects;
         }
 
-        public abstract void Predict(Vector2 startPoint, Vector2 direction);
+        public abstract void Predict(Vector2 startPoint, Vector2 direction, float gravityScale);
         
         public void Hide()
         {
@@ -21,10 +21,10 @@ namespace Mono.Weapons.Predicates
                 projectile.SetActive(false);
         }
         
-        protected Vector2 CalculatePhysicDirection(Vector2 startPoint, Vector2 direction, int factor)
+        protected Vector2 CalculatePhysicDirection(Vector2 startPoint, Vector2 direction, float factor, float gravityScale)
         {
             direction /= _divider;
-            return startPoint + (direction + Physics2D.gravity * (Time.fixedDeltaTime * factor)) * factor;
+            return startPoint + (direction + Physics2D.gravity * (gravityScale * (Time.fixedDeltaTime * factor))) * factor;
         }
         
         protected void Show()
