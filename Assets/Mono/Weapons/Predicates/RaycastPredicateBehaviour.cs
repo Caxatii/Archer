@@ -7,52 +7,62 @@ namespace Mono.Weapons.Predicates
     {
         public RaycastPredicateBehaviour(List<GameObject> objects) : base(objects) { }
         
-        public override void Predict(Vector2 startPoint, Vector2 direction, float gravityScale)
+        public override void Predict(Vector2 startPoint, Vector2 direction, float density, float gravityScale)
         {
             Show();
-            
-            for (int i = 0; i < Objects.Count; i++)
+            PredicateInfo info = new PredicateInfo(direction, 0, startPoint, density, gravityScale);
+
+            foreach (GameObject gameObject in Objects)
             {
-                if(RaycastPredict(startPoint, direction, i, gravityScale))
+                if (RaycastPredict(info))
                     return;
+
+                info.Next();
             }
         }
         
-        private bool RaycastPredict(Vector2 startPoint, Vector2 direction, int index, float gravityScale)
+        private bool RaycastPredict(PredicateInfo info)
         {
-            if (index == 0)
-                return HandleFirstIndex(startPoint, direction, index, gravityScale);
+            if (info.Index == 0)
+                return HandleFirstIndex(info);
 
-            return HandleRaycastPrediction(startPoint, direction, index, gravityScale);
+            return HandleRaycastPrediction(info);
         }
 
-        private bool HandleFirstIndex(Vector2 startPoint, Vector2 direction, int index, float gravityScale)
+        private bool HandleFirstIndex(PredicateInfo info)
         {
-            SimplePredict(startPoint, direction, index, gravityScale);
+            SimplePredict(info);
             return false;
         }
 
-        private bool HandleRaycastPrediction(Vector2 startPoint, Vector2 direction, int index, float gravityScale)
+        private bool HandleRaycastPrediction(PredicateInfo info)
         {
-            Vector2 obstacleCheckPoint = Objects[index - 1].transform.position;
-            Vector2 rayDirection = CalculatePhysicDirection(startPoint, direction, index, gravityScale);
+            Vector2 obstacleCheckPoint = Objects[info.Index - 1].transform.position;
+            
+            Vector2 rayDirection = CalculatePhysicDirection(info.StartPoint,
+                info.Direction,
+                info.Index * info.Density,
+                info.GravityScale);
 
             RaycastHit2D obstacle = HasObstacle(obstacleCheckPoint, rayDirection);
 
             if (obstacle.collider != null)
             {
-                Objects[index].transform.position = obstacle.point;
-                HideAfter(index);
+                Objects[info.Index].transform.position = obstacle.point;
+                HideAfter(info.Index);
                 return true;
             }
 
-            Objects[index].transform.position = rayDirection;
+            Objects[info.Index].transform.position = rayDirection;
             return false;
         }
         
-        private void SimplePredict(Vector2 startPoint, Vector2 direction, int factor, float gravityScale)
+        private void SimplePredict(PredicateInfo info)
         {
-            Objects[factor].transform.position = CalculatePhysicDirection(startPoint, direction, factor, gravityScale);
+            Objects[info.Index].transform.position = CalculatePhysicDirection(info.StartPoint,
+                info.Direction,
+                info.Index * info.Density,
+                info.GravityScale);
         }
         
         private void HideAfter(int index)

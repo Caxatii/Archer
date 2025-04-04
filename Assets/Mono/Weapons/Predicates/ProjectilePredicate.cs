@@ -8,6 +8,7 @@ namespace Mono.Weapons.Predicates
         [SerializeField] private bool _useRaycast;
         [SerializeField] private int _count;
         [SerializeField] private float _scaleFactor;
+        [SerializeField] private float _density;
         
         [SerializeField] private GameObject _projectilePrefab;
 
@@ -27,7 +28,7 @@ namespace Mono.Weapons.Predicates
         
         public void Predict(Vector2 startPoint, Vector2 direction, float gravityScale)
         {
-            _predicate.Predict(startPoint, direction, gravityScale);
+            _predicate.Predict(startPoint, direction, _density, gravityScale);
         }
 
         public void Hide()

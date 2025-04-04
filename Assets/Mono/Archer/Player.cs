@@ -44,7 +44,7 @@ namespace Mono.Archer
         {
             _predicate.Predict(_arrowSpawner.SpawnPoint.position,
                 _arrowSpawner.SpawnPoint.right *
-                CalculateThrowDirection(point).magnitude, 
+                CalculateThrowDirection(point).magnitude,
                 _arrow.GetGravityScale());
         }
 
@@ -59,7 +59,6 @@ namespace Mono.Archer
         {
             _startTouchPosition = point;
             _arrow = _arrowSpawner.GetArrow();
-            // _arrow.gameObject.SetActive(false);
         }
 
         private Vector2 CalculateThrowDirection(Vector2 point)

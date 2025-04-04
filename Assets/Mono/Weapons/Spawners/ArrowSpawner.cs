@@ -28,6 +28,7 @@ namespace Mono.Weapons.Spawners
         public Arrow GetArrow()
         {
             var arrow = _pool.Get();
+            arrow.gameObject.SetActive(false);
             arrow.Blasted += OnCollisionHit;
             return arrow;
         }
@@ -46,7 +47,7 @@ namespace Mono.Weapons.Spawners
 
         private Arrow Create()
         {
-            return Instantiate(_arrowPrefab, transform);
+            return Instantiate(_arrowPrefab, transform.position, Quaternion.identity, transform);
         }
     }
 }

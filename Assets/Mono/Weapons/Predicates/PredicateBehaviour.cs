@@ -13,7 +13,7 @@ namespace Mono.Weapons.Predicates
             Objects = objects;
         }
 
-        public abstract void Predict(Vector2 startPoint, Vector2 direction, float gravityScale);
+        public abstract void Predict(Vector2 startPoint, Vector2 direction, float density, float gravityScale);
         
         public void Hide()
         {

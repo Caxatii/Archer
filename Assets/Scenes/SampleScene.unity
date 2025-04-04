@@ -1629,6 +1629,7 @@ MonoBehaviour:
   _useRaycast: 1
   _count: 15
   _scaleFactor: 0.9
+  _density: 0.89
   _projectilePrefab: {fileID: 2778611839643331127, guid: 6eefe5dea99c5da4180b85fcefc48531, type: 3}
 --- !u!1 &1242585074
 GameObject:
